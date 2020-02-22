@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 
-class HomeAdapter : PagedListAdapter<Movie, HomeAdapter.ViewHolder>(UpcomingDiffCallback) {
+class HomeAdapter(private val onCardClickListener: (Movie) -> Unit) : PagedListAdapter<Movie, HomeAdapter.ViewHolder>(UpcomingDiffCallback) {
 
     companion object {
         val UpcomingDiffCallback = object : DiffUtil.ItemCallback<Movie>() {
@@ -33,14 +33,14 @@ class HomeAdapter : PagedListAdapter<Movie, HomeAdapter.ViewHolder>(UpcomingDiff
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, onCardClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val onCardClickListener: (Movie) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
             itemView.titleTextView.text = movie.title
             itemView.genresTextView.text = movie.genres?.joinToString(separator = ", ") { it.name }
@@ -50,6 +50,10 @@ class HomeAdapter : PagedListAdapter<Movie, HomeAdapter.ViewHolder>(UpcomingDiff
                 .load(movie.posterPath?.buildPosterUrl())
                 .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
                 .into(itemView.posterImageView)
+
+			itemView.setOnClickListener{
+				onCardClickListener(movie)
+			}
         }
     }
 }
