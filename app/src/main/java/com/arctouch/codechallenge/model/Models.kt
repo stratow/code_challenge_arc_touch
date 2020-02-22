@@ -1,25 +1,45 @@
 package com.arctouch.codechallenge.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
-data class GenreResponse(val genres: List<Genre>)
 
-data class Genre(val id: Int, val name: String)
+data class GenreResponse(
+	@SerializedName("genres")
+	val genres: List<Genre>
+)
+
+data class Genre(
+	@SerializedName("id")
+	val id: Int,
+	@SerializedName("name")
+	val name: String
+)
 
 data class UpcomingMoviesResponse(
-    val page: Int,
-    val results: List<Movie>,
-    @Json(name = "total_pages") val totalPages: Int,
-    @Json(name = "total_results") val totalResults: Int
+	@SerializedName("page")
+	val page: Int,
+	@SerializedName("results")
+	val results: List<Movie>,
+	@SerializedName("total_pages")
+	val totalPages: Int,
+	@SerializedName("total_results")
+	val totalResults: Int
 )
 
 data class Movie(
-    val id: Int,
-    val title: String,
-    val overview: String?,
-    val genres: List<Genre>?,
-    @Json(name = "genre_ids") val genreIds: List<Int>?,
-    @Json(name = "poster_path") val posterPath: String?,
-    @Json(name = "backdrop_path") val backdropPath: String?,
-    @Json(name = "release_date") val releaseDate: String?
+	@SerializedName("id")
+	val id: Int,
+	@SerializedName("title")
+	val title: String,
+	@SerializedName("overview")
+	val overview: String?,
+	val genres: List<Genre>?,
+	@SerializedName("genre_ids")
+	val genreIds: List<Int>?,
+	@SerializedName("poster_path")
+	val posterPath: String?,
+	@SerializedName("backdrop_path")
+	val backdropPath: String?,
+	@SerializedName("release_date")
+	val releaseDate: String?
 )
