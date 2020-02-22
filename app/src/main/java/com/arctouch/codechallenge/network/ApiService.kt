@@ -1,21 +1,14 @@
-package com.arctouch.codechallenge.api
+package com.arctouch.codechallenge.network
 
 import com.arctouch.codechallenge.model.GenreResponse
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.model.UpcomingMoviesResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TmdbApi {
-
-    companion object {
-        const val URL = "https://api.themoviedb.org/3/"
-        const val API_KEY = "1f54bd990f1cdfb230adb312546d765d"
-        const val DEFAULT_LANGUAGE = "pt-BR"
-        const val DEFAULT_REGION = "BR"
-    }
-
+interface ApiService {
     @GET("genre/movie/list")
     suspend fun genres(
         @Query("api_key") apiKey: String,
@@ -27,8 +20,8 @@ interface TmdbApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Long,
-        @Query("region") region: String
-    ): UpcomingMoviesResponse
+        @Query("region") region: String?
+    ): Response<UpcomingMoviesResponse>
 
     @GET("movie/{id}")
     suspend fun movie(
@@ -36,4 +29,11 @@ interface TmdbApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Movie
+
+    @GET("movie/{id}")
+    suspend fun movie2(
+        @Path("id") id: Long,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Response<Movie>
 }
